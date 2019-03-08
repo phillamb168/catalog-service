@@ -17,16 +17,11 @@ pipeline {
       steps {
         checkout scm
         container('maven') {
-          sh 'mvn -B clean package'
+          sh './mvn clean package'
         }
       }
     }
     stage('Docker build') {
-      when {
-        expression {
-          return env.BRANCH_NAME ==~ 'release/.*' || env.BRANCH_NAME ==~'master'
-        }
-      }
       steps {
         container('docker') {
           sh "docker build -t ${env.TAG_DEV} ."
@@ -34,11 +29,6 @@ pipeline {
       }
     }
     stage('Docker push to registry'){
-      when {
-        expression {
-          return env.BRANCH_NAME ==~ 'release/.*' || env.BRANCH_NAME ==~'master'
-        }
-      }
       steps {
         container('docker') {
           sh "docker push ${env.TAG_DEV}"
