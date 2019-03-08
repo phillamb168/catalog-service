@@ -17,7 +17,7 @@ pipeline {
       steps {
         checkout scm
         container('maven') {
-          sh '/home/jenkins/workspace/catalog/mvnw clean package'
+          sh 'cd /home/jenkins/workspace/catalog && ./mvnw clean package'
         }
       }
     }
