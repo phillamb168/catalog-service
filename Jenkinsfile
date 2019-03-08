@@ -17,7 +17,7 @@ pipeline {
       steps {
         checkout scm
         container('maven') {
-          sh './mvn clean package'
+          sh './mvnw clean package'
         }
       }
     }
