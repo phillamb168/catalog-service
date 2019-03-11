@@ -32,7 +32,7 @@ pipeline {
       steps {
         container('docker') {
           withCredentials([usernamePassword(credentialsId: 'acm-demo-app-cicd-user', passwordVariable: 'TOKEN', usernameVariable: 'USER')]) {
-            sh "docker login --username=${USER} --password=${TOKEN} ${env.DOCKER_REGISTRY_URL}"
+            sh "docker login --username=${USER} --password=${TOKEN} https://${env.DOCKER_REGISTRY_URL}"
             sh "docker push ${env.TAG_DEV}"
           }
         }
