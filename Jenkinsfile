@@ -6,11 +6,10 @@ pipeline {
   }
   environment {
     APP_NAME = "catalog"
-    ARTEFACT_ID = "${env.APP_NAME}"
     VERSION = readFile('version').trim()
-    TAG = "${env.DOCKER_REGISTRY_URL}/${env.ARTEFACT_ID}"
-    TAG_DEV = "${env.TAG}-${env.VERSION}-${env.BUILD_NUMBER}"
-    TAG_STAGING = "${env.TAG}-${env.VERSION}"
+    DOCKER_REPO = "${env.DOCKER_REGISTRY_URL}/${env.APP_NAME}"
+    DEV_TAG = "${env.DOCKER_REPO}/${env.VERSION}-${env.BUILD_NUMBER}"
+    TAG = "${env.DOCKER_REPO}/${env.VERSION}"
   }
   stages {
     stage('Maven build') {
@@ -24,7 +23,8 @@ pipeline {
     stage('Docker build') {
       steps {
         container('docker') {
-          sh "docker build -t ${env.TAG_DEV} ."
+          sh "docker build -t ${env.TAG} ."
+          sh "docker tag ${env.TAG} ${env.DEV_TAG}"
         }
       }
     }
@@ -33,7 +33,8 @@ pipeline {
         container('docker') {
           withCredentials([usernamePassword(credentialsId: 'acm-demo-app-cicd-user', passwordVariable: 'TOKEN', usernameVariable: 'USER')]) {
             sh "docker login --username=${USER} --password=${TOKEN} https://${env.DOCKER_REGISTRY_URL}"
-            sh "docker push ${env.TAG_DEV}"
+            sh "docker push ${env.TAG}"
+            sh "docker push ${env.DEV_TAG}"
           }
         }
       }
