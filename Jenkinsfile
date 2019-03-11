@@ -13,9 +13,14 @@ pipeline {
     TAG_STAGING = "${env.TAG}-${env.VERSION}"
   }
   stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/dt-kube-demo/catalog-service.git'
+       }
+    }
     stage('Maven build') {
       steps {
-        checkout scm
+        //checkout scm
         container('maven') {
           sh 'unset MAVEN_CONFIG && env && ./mvnw clean package -Dmaven.test.skip=true'
         }
