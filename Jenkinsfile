@@ -23,8 +23,9 @@ pipeline {
     stage('Docker build') {
       steps {
         container('docker') {
-          sh "docker build -t ${env.TAG} ."
-          sh "docker tag ${env.TAG} ${env.DEV_TAG}"
+          sh "docker build -t ${env.DOCKER_REPO} ."
+          sh "docker tag ${env.DOCKER_REPO} ${env.TAG}"
+          sh "docker tag ${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
         }
       }
     }
