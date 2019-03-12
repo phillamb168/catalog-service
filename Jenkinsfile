@@ -35,7 +35,7 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'acm-demo-app-cicd-user', passwordVariable: 'TOKEN', usernameVariable: 'USER')]) {
             sh "docker login --username=${USER} --password=${TOKEN} https://${env.DOCKER_REGISTRY_URL}"
             sh "docker push ${env.DOCKER_REPO}:${env.TAG}"
-            sh "docker push $${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
+            sh "docker push ${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
           }
         }
       }
