@@ -24,8 +24,8 @@ pipeline {
       steps {
         container('docker') {
           sh "docker build -t ${env.DOCKER_REPO} ."
-          sh "docker tag ${env.DOCKER_REPO} ${env.TAG}"
-          sh "docker tag ${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
+          sh "docker tag ${env.DOCKER_REPO} ${env.DOCKER_REPO}:${env.TAG}"
+          sh "docker tag ${env.DOCKER_REPO} ${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
         }
       }
     }
@@ -34,8 +34,8 @@ pipeline {
         container('docker') {
           withCredentials([usernamePassword(credentialsId: 'acm-demo-app-cicd-user', passwordVariable: 'TOKEN', usernameVariable: 'USER')]) {
             sh "docker login --username=${USER} --password=${TOKEN} https://${env.DOCKER_REGISTRY_URL}"
-            sh "docker push ${env.TAG}"
-            sh "docker push ${env.DEV_TAG}"
+            sh "docker push ${env.DOCKER_REPO}:${env.TAG}"
+            sh "docker push $${env.DOCKER_REPO}:${env.BUILD_NUMBER}"
           }
         }
       }
