@@ -8,14 +8,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.ewolff.microservice.catalog.Item;
 import com.ewolff.microservice.catalog.ItemRepository;
+
+import java.io.*;
 
 @Controller
 public class CatalogController {
 
 	private final ItemRepository itemRepository;
+	
+	@Value( "${application.version:no-version}" )
+	private String version;
 
 	@Autowired
 	public CatalogController(ItemRepository itemRepository) {
@@ -67,4 +76,9 @@ public class CatalogController {
 		return new ModelAndView("success");
 	}
 
+	@RequestMapping(value = "/version", method = RequestMethod.GET)
+	@ResponseBody
+	public String getVersion() {
+		return version;
+	}
 }
