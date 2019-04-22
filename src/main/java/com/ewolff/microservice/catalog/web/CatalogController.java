@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
 import com.ewolff.microservice.catalog.Item;
 import com.ewolff.microservice.catalog.ItemRepository;
 
@@ -22,9 +19,6 @@ import java.io.*;
 public class CatalogController {
 
 	private final ItemRepository itemRepository;
-	
-	@Value( "${application.version:no-version}" )
-	private String version;
 
 	@Autowired
 	public CatalogController(ItemRepository itemRepository) {
@@ -79,6 +73,15 @@ public class CatalogController {
 	@RequestMapping(value = "/version", method = RequestMethod.GET)
 	@ResponseBody
 	public String getVersion() {
-		return version;
+		 File file = new File("version"); 
+		 String version = "version not found";
+		 try {
+			 BufferedReader br = new BufferedReader(new FileReader(file));
+			 version = br.readLine();
+		 }
+		 catch(Exception e) {
+			 version = e.getMessage();
+		 }
+		 return version;
 	}
 }
