@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Calendar;
+import java.util.Date; 
+
 import com.ewolff.microservice.catalog.Item;
 import com.ewolff.microservice.catalog.ItemRepository;
 
@@ -83,5 +86,14 @@ public class CatalogController {
 			 version = e.getMessage();
 		 }
 		 return version;
+	}
+	
+	@RequestMapping(value = "/health", method = RequestMethod.GET)
+	@ResponseBody
+	public String getHealth() {
+
+		Date dateNow = Calendar.getInstance().getTime();
+		String health = "{ \"health\":[{\"service\":\"catalog-service\",\"status\":\"OK\",\"date\":\"" + dateNow + "\" }]}";
+		return health;
 	}
 }
