@@ -11,8 +11,8 @@ then
   exit 1
 fi
 
-./mvnw clean package
-#./mvnw clean package -Dmaven.test.skip=true
+#./mvnw clean package
+./mvnw clean package -Dmaven.test.skip=true
 
 docker build -t $IMAGE .
 
