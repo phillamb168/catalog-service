@@ -1,23 +1,27 @@
 #!/bin/bash
 
-export GITHUB_ACCOUNT=$1
-export VERSION_TAG=$2
-export IMAGE=$GITHUB_ACCOUNT/keptn-orders-catalog-service:$VERSION_TAG
-
 clear
 if [ $# -lt 2 ]
 then
-  echo "missing arguments. Expect ./buildpush.sh <registry> <tag>"
+  echo "missing arguments. Expect ./buildpush.sh <REPOSITORY> <VERSION_TAG>"
+  echo "example:   ./buildpush.sh dtdemos 1"
   exit 1
 fi
+
+IMAGE=dt-catalog-servic
+REPOSITORY=$1
+VERSION_TAG=$2
+FULLIMAGE=$REPOSITORY/$IMAGE:$VERSION_TAG
 
 #./mvnw clean package
 ./mvnw clean package -Dmaven.test.skip=true
 
-docker build -t $IMAGE .
+docker build -t $FULLIMAGE .
 
 echo ""
-echo "Ready to push to? $IMAGE"
+echo "========================================================"
+echo "Ready to push $FULLIMAGE ?"
+echo "========================================================"
 read -rsp "Press ctrl-c to abort. Press any key to continue"
 
-docker push $IMAGE
+docker push $FULLIMAGE

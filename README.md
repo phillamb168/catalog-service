@@ -1,21 +1,19 @@
 # Overview
 
-This repo has code for a Java spring-boot micro service.
+# Overview
 
-Demo app credits go to: https://github.com/ewolff/microservice-kubernetes
-
-The application is built and run using Jenkins.  See ```Jenkinsfile``` in this repo.
-
-This application will be packaged in a Docker image.  See ```Dockerfile``` in this repo
+This repo has the code for the orders service for demostrations.  See the [overview](https://github.com/dt-orders/overview) repo for an overiew for that whole application.
 
 # Developer Notes
+
+For the order service to run locally, the ports and IP of these services needs to be passed into Docker as environment variables -AND- catalog, and customer services must be listening on the ports defined in this script.
 
 ## Pre-requisites
 
 The following programs to be installed
 * Java 1.8
 * Maven
-* IDE such as VS Code
+* Docker
 
 ## Build and Run Locally
 
@@ -26,11 +24,9 @@ The following programs to be installed
   ```
 2. access application at ```http://localhost:8080```
 
-# Utilities
+## quicktest
 
-## 1. quicktest
-
-unix shell script that loops and calls the app URL.  Just call:
+Use the provided Unix shell script that loops and calls the app URL.  Just call:
 
 ```./quicktest.sh <catalog base url>```
 
@@ -38,12 +34,23 @@ For example:
 
 ```./quicktest.sh http://localhost:8080```
 
-## 2. quickbuild
+## Build Docker Images and push images to a repository
 
-unix shell script that builds and pushes docker image named: keptn-orders-catalog-service:tag.  Just call:
+Use the provided Unix shell scipt that will build the docker image and publish it. 
 
-```./quickbuild.sh <registry> <tag>```
+    Just call: `./buildpush.sh <REPOSITORY> <VERSION_TAG>`
 
-For example:
+    For example: `./buildpush.sh dtdemos 1`
 
-```./quickbuild.sh robjahn 1```
+## Run Docker Image Locally
+
+1. Here is an example of running version 2
+  ```
+  docker run -p 8080:8080 dtdemos/dt-orders-customer-service:2
+  ```
+
+2. access application at ```http://localhost:8080```
+
+# Credits
+
+* Orginal demo code: https://github.com/ewolff/microservice-kubernetes
