@@ -1,7 +1,5 @@
 # Overview
 
-# Overview
-
 This repo has the code for the orders service for demostrations.  See the [overview](https://github.com/dt-orders/overview) repo for an overiew for that whole application.
 
 # Developer Notes
