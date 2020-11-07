@@ -8,7 +8,7 @@ then
   exit 1
 fi
 
-IMAGE=dt-catalog-service
+IMAGE=dt-orders-catalog-service
 REPOSITORY=$1
 VERSION_TAG=$2
 FULLIMAGE=$REPOSITORY/$IMAGE:$VERSION_TAG
