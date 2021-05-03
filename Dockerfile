@@ -1,4 +1,4 @@
-FROM openjdk:14
+FROM openjdk:15
 COPY target/*.jar .
 
 # used to set the problem pattern
