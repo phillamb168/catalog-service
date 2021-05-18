@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Calendar;
 import java.util.Date; 
+import java.io.*;
 
 import com.ewolff.microservice.catalog.Item;
 import com.ewolff.microservice.catalog.ItemRepository;
 
-import java.io.*;
 
 @Controller
 public class CatalogController {
@@ -105,6 +105,26 @@ public class CatalogController {
 		return new ModelAndView("success");
 	}
 	
+	@RequestMapping(value = "/manifest", method = RequestMethod.GET)
+	@ResponseBody
+	public String getManifest() {
+		 File file = new File("/MANIFEST"); 
+		 String manifest = "MANIFEST file not found";
+		 try {
+			 BufferedReader br = new BufferedReader(new FileReader(file));
+			 String line = br.readLine();
+			 manifest = line + "<BR>";
+			 while ((line = br.readLine()) != null) {
+				manifest = manifest + line + "<BR>";
+			 }
+			 br.close();
+		 }
+		 catch(Exception e) {
+			manifest = e.getMessage();
+		 }
+		 return manifest;
+	}
+
 	@RequestMapping(value = "/health", method = RequestMethod.GET)
 	@ResponseBody
 	public String getHealth() {

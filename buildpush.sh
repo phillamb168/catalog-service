@@ -1,32 +1,27 @@
 #!/bin/bash
 
 clear
-
 REPOSITORY=$1
-VERSION_TAG=$2
-
 if [ -z "$REPOSITORY" ]
 then
     REPOSITORY=dtdemos
 fi
 
-if [ -z "$VERSION_TAG" ]
-then
-    VERSION_TAG=1
-fi
-
-IMAGE=dt-orders-catalog-service
-FULLIMAGE=$REPOSITORY/$IMAGE:$VERSION_TAG
+IMAGE=$REPOSITORY/dt-orders-catalog-service
 
 #./mvnw clean package
 ./mvnw clean package -Dmaven.test.skip=true
+./writeManifest.sh
 
-docker build -t $FULLIMAGE .
+docker build -t $IMAGE:1 . --build-arg APP_VERSION=1
+docker tag $IMAGE:1 $IMAGE:1.0.0
 
 echo ""
 echo "========================================================"
-echo "Ready to push $FULLIMAGE ?"
+echo "Ready to push images ?"
 echo "========================================================"
 read -rsp "Press ctrl-c to abort. Press any key to continue"
 
-docker push $FULLIMAGE
+echo "Pushing $IMAGE:1"
+docker push $IMAGE:1
+docker push $IMAGE:1.0.0
